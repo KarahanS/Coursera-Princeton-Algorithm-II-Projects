@@ -2,6 +2,8 @@
 Seam-carving is a content-aware image resizing technique where the image is reduced in size by one pixel of height (or width) at a time. A _vertical seam_ in an image is a path of pixels connected from the top to the bottom with one pixel in each row; a _horizontal seam_ is a path of pixels connected from the left to the right with one pixel in each column. Below left is the original 505-by-287 pixel image; below right is the result after removing 150 vertical seams, resulting in a 30% narrower image. Unlike standard content-agnostic resizing techniques (such as cropping and scaling), seam carving preserves the most interest features (aspect ratio, set of objects present, etc.) of the image.
 
 Although the [underlying algorithm](https://www.youtube.com/watch?v=6NcIJXTlugc) is simple and elegant, it was not discovered until 2007. Now, it is now a core feature in Adobe Photoshop and other computer graphics applications.
+
+![](images/HJoceanSmall.png)   ![](images/HJoceanSmallShrunk.png)
 # Energy Calculation
 The first step is to calculate the energy of each pixel, which is a measure of the importance of each pixel—the higher the energy, the less likely that the pixel will be included as part of a seam (as we'll see in the next step). In this assignment, we will implement the _dual-gradient energy function_. 
 The energy is high (white) for pixels in an image where there is a rapid color gradient (such as the boundary between the sea and sky and the boundary between the surfing man on the left and the ocean behind him). The seam-carving technique avoids removing such high-energy pixels.
