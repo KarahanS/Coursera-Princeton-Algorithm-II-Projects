@@ -15,7 +15,7 @@ We now solve the baseball elimination problem by reducing it to the maxflow prob
 ![](images/baseball.png) 
 
 # Min-cut Subset
-In fact, when a team is mathematically eliminated, there always exists such a convincing <em>certificate of elimination</em>, where <em>R</em> is some subset of the other teams in the division. Moreover, we can always find such a subset <em>R</em> by choosing the team vertices on the source side of a <em>min s-t cut</em> in the baseball elimination network. Note that although we solved a maxflow/mincut problem to find the subset R, once we have it, the argument for a team's elimination requires a little bit algebra.
+In fact, when a team is mathematically eliminated, there always exists such a convincing <em>certificate of elimination</em>, where <em>R</em> is some subset of the other teams in the division. Moreover, we can always find such a subset <em>R</em> by choosing the team vertices on the source side of a <em>min s-t cut</em> in the baseball elimination network. Note that although we solved a maxflow/mincut problem to find the subset <em>R</em>, once we have it, the argument for a team's elimination requires a little bit algebra.
 
 To verify that we are returning a valid certificate of elimination<em> R</em>,  we should compute <em>a(R) = (w(R) + g(R)) / |R|</em>, where <em>w(R)</em> is the total number of wins of teams in <em>R</em>, <em>g(R)</em> is the total number of remaining games between teams in <em>R</em>, and <em>|R|</em> is the number of teams in <em>R</em>. Check that <em>a(R)</em> is greater than the maximum number of games the eliminated team can win.
 
