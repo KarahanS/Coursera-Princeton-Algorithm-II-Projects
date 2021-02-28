@@ -1,29 +1,30 @@
-# Baseball Elimination
- In the [baseball elimination problem](https://en.wikipedia.org/wiki/Maximum_flow_problem#Baseball_elimination), there is a division consisting of <em>n</em> teams. At some point during the season, team <em>i</em> has <code>w[i]</code> wins, <code>l[i]</code> losses, <code>r[i]</code> remaining games, and <code>g[i][j]</code> games left to play against team <em>j</em>. A team is mathematically eliminated if it cannot possibly finish the season in (or tied for) first place. The goal is to determine exactly which teams are mathematically eliminated. For simplicity, we assume that no games end in a tie (as is the case in Major League Baseball) and that there are no rainouts (i.e., every scheduled game is played).
+# Boggle 
+<b>The Boggle game</b>. [Boggle](https://en.wikipedia.org/wiki/Boggle) is a word game designed by Allan Turoff and distributed by Hasbro. It involves a board made up of 16 cubic dice, where each die has a letter printed on each of its 6 sides. At the beginning of the game, the 16 dice are shaken and randomly distributed into a 4-by-4 tray, with only the top sides of the dice visible. The players compete to accumulate points by building <em>valid</em> words from the dice, according to these rules:
 
-The problem is not as easy as many sports writers would have you believe, in part because the answer depends not only on the number of games won and left to play, but also on the schedule of remaining games.
-# Maxflow Formulation
-We now solve the baseball elimination problem by reducing it to the maxflow problem. To check whether team <em>x</em> is eliminated, we consider two cases.
-* <em>Trivial elimination</em>: If the maximum number of games team <em>x</em> can win is less than the number of wins of some other team <em>i</em>, then team <em>x</em> is trivially eliminated (as is Montreal in the example above). That is, if <code>w[x] + r[x] < w[i]</code>, then team <em>x</em> is mathematically eliminated.
-* <em>Nontrivial elimination</em>: Otherwise, we create a flow network and solve a maxflow problem in it. In the network, feasible integral flows correspond to outcomes of the remaining schedule. There are vertices corresponding to teams (other than team <em>x</em>) and to remaining divisional games (not involving team <em>x</em>). Intuitively, each unit of flow in the network corresponds to a remaining game. As it flows through the network from <em>s</em> to <em>t</em>, it passes from a game vertex, say between teams <em>i</em> and <em>j</em>, then through one of the team vertices <em>i</em> or <em>j</em>, classifying this game as being won by that team.
-                           <br><br>More precisely, the flow network includes the following edges and capacities:
-  
-    * We connect an artificial source vertex <em>s</em> to each game vertex <em>i-j</em> and set its capacity to <code>g[i][j]</code>. If a flow uses all <code>g[i][j]</code> units of capacity on this edge, then we interpret this as playing all of these games, with the wins distributed between the team vertices <em>i</em> and <em>j</em>.
-    * We connect each game vertex <em>i-j</em> with the two opposing team vertices to ensure that one of the two teams earns a win. We do not need to restrict the amount of flow on such edges.
-     * Finally, we connect each team vertex to an artificial sink vertex <em>t</em>. We want to know if there is some way of completing all the games so that team <em>x</em> ends up winning at least as many games as team <em>i</em>. Since team x can win as many as <code>w[x] + r[x]</code> games, we prevent team <em>i</em> from winning more than that many games in total, by including an edge from team vertex <em>i</em> to the sink vertex with capacity <code>w[x] + r[x] - w[i]</code>.
+* A valid word must be composed by following a sequence of <em>adjacent dice</em>—two dice are adjacent if they are horizontal, vertical, or diagonal neighbors.
+* A valid word can use each die at most once.
+* A valid word must contain at least 3 letters.
+* A valid word must be in the dictionary (which typically does not contain proper nouns).
 
-![](images/baseball.png) 
+<b>Scoring</b>. Valid words are scored according to their length, using this table:
 
-# Min-cut Subset
-In fact, when a team is mathematically eliminated, there always exists such a convincing <em>certificate of elimination</em>, where <em>R</em> is some subset of the other teams in the division. Moreover, we can always find such a subset <em>R</em> by choosing the team vertices on the source side of a <em>min s-t cut</em> in the baseball elimination network. Note that although we solved a maxflow/mincut problem to find the subset <em>R</em>, once we have it, the argument for a team's elimination requires a little bit algebra.
+|    Word length   | Points    |
+| :-------------: |:-------------:| 
+|    3, 4     | 1       |
+|     5    | 2  |
+|     6      | 3     |
+|     7    | 5     |
+|     8+    | 11      | 
 
-To verify that we are returning a valid certificate of elimination<em> R</em>,  we should compute <em>a(R) = (w(R) + g(R)) / |R|</em>, where <em>w(R)</em> is the total number of wins of teams in <em>R</em>, <em>g(R)</em> is the total number of remaining games between teams in <em>R</em>, and <em>|R|</em> is the number of teams in <em>R</em>. Check that <em>a(R)</em> is greater than the maximum number of games the eliminated team can win.
+<b>The Qu special case</b>. In the English language, the letter <code>Q</code> is almost always followed by the letter <code>U</code>. Consequently, the side of one die is printed with the two-letter sequence <code>Qu</code> instead of <code>Q</code> (and this two-letter sequence must be used together when forming words). When scoring, <code>Qu</code> counts as two letters; for example, the word QuEUE scores as a 5-letter word even though it is formed by following a sequence of only 4 dice.
+
+<b>Our task</b>. Our challenge is to write a Boggle solver that finds all valid words in a given Boggle board, using a given dictionary.
 
 # Conclusion
-Project involves my solution to the Baseball Elimination assignment. This problem is one of the assignments given in the online algorithm course of Princeton University. My work consists of BaseballElimination.java. I've written other programs Bag.java, FlowEdge.java, FlowNetwork.java and FordFulkerson.java, inspired by the implementations of same algorithms and data-types given in <em>Algorithms, 4th Edition</em>. 
+Project involves my solution to the Boggle assignment. This problem is one of the assignments given in the online algorithm course of Princeton University. My work consists of DeluxeTrie.java and BoggleSolver.java. BoggleBoard.java is already given in the specification of the assignment. Timing is intentionally, more challenging on this assignment. To optimize my solution, I implemented nonrecursive <em>prefix query</em> backtracking operation, advised in the specification. I keep both a 26-way trie and a hashset to store the words in the dictionary so that I can perform prefix query operations more efficiently, and check if a word is present in the dictionary in constant time. I keep a variable for each node which shows if the node in question is a leaf node (in other words, there is no string with that prefix in the dictionary, except possibly the prefix itself). It also makes the algorithm much more efficient since iterating through all children nodes (to see if any) for each node can be a bottleneck.
 
 
 # References
-* https://coursera.cs.princeton.edu/algs4/assignments/baseball/specification.php
-* https://coursera.cs.princeton.edu/algs4/assignments/baseball/faq.php
-* https://en.wikipedia.org/wiki/Maximum_flow_problem#Baseball_elimination
+* https://coursera.cs.princeton.edu/algs4/assignments/boggle/specification.php
+* https://coursera.cs.princeton.edu/algs4/assignments/boggle/faq.php
+* https://en.wikipedia.org/wiki/Boggle
