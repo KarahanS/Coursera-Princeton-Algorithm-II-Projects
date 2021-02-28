@@ -118,7 +118,6 @@ public class SeamCarver {
 	}
 	
 	private int[] findSeam() {
-		Queue<Integer> q = new Queue<Integer>();
 		double distTo[][] = new double[energy.length][energy[0].length];
 		int edgeTo[][] = new int[energy.length][energy[0].length];
 		
@@ -131,7 +130,6 @@ public class SeamCarver {
 		
 		for(int i=0; i<energy[0].length; i++)  {
 			distTo[0][i] = energy[0][i];
-			q.enqueue(i);
 		}
 		
 		for(int y=0; y < energy.length - 1; y++) {
