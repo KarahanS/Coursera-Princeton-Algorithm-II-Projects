@@ -26,7 +26,7 @@ The goal of the Burrows–Wheeler transform is not to compress a message, but ra
 
 
 # Conclusion
-Project involves my solution to the Burrows-Wheeler assignment. This problem is one of the assignments given in the online algorithm course of Princeton University. My work consists of MoveToFront.java, CircularSuffixArray.java and BurrowsWheeler.java. I used BinaryStdIn.java and BinaryStdOut.java, which are described in <em>Algorithms, 4th edition</em>, to read and write binary data. 
+Project involves my solution to the Burrows-Wheeler assignment. This problem is one of the assignments given in the online algorithm course of Princeton University. My work consists of MoveToFront.java, CircularSuffixArray.java and BurrowsWheeler.java. I used BinaryStdIn.java and BinaryStdOut.java, which are described in <em>Algorithms, 4th edition</em>, to read and write binary data. I used Radix Sort for Burrows Wheeler transforms and 3-way Radix Quicksort to sort circular suffix arrays.
 
 
 # References
